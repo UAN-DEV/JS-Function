@@ -8,6 +8,5 @@
  * @returns
  */
 export function roundToPrecision(num, precision = 0) {
-  const NUM_OF_PRECISION = num.toFixed(precision);
-  return num - NUM_OF_PRECISION === 0 ? num : NUM_OF_PRECISION;
+  return num - num.toFixed(precision) === 0 ? num : num.toFixed(precision);
 }

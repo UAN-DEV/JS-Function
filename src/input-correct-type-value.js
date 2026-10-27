@@ -2,17 +2,17 @@
 
 /**
  * Validation of input values ​​against the provided configuration
- * 
- * @param {array} arrTypesAndNames - Array of objects with the names and types of the required values 
+ *
+ * @param {array} arrTypesAndNames - Array of objects with the names and types of the required values
  * @returns {array} Array with valid data
  */
 export function inputCorrectTypeValue(
-  arrTypesAndNames = [{ nameValue: "num1", typeValue: "number" }],
+  arrTypesAndNames = [{ nameValue: "num1", typeValue: "number > 0" }],
 ) {
   const arrValue = arrTypesAndNames.map((item) => {
     while (true) {
       const INN_VALUE = prompt(
-        `Enter ${item.nameValue.toUpperCase()} (must be a ${item.typeValue}):`,
+        `Enter <${item.nameValue.toUpperCase()}> (must be a ${item.typeValue}):`,
       );
       let retValue = [];
       switch (item.typeValue) {
@@ -24,12 +24,36 @@ export function inputCorrectTypeValue(
         case "string":
           return String(INN_VALUE);
           break;
+        case "number > 0":
+        case "number> 0":
+        case "number>0":
+          if (Number(INN_VALUE) > 0) return Number(INN_VALUE);
+          break;
+        case "number < 0":
+        case "number< 0":
+        case "number<0":
+          if (Number(INN_VALUE) < 0) return Number(INN_VALUE);
+          break;
+        case "number >= 0":
+        case "number>= 0":
+        case "number >=0":
+        case "number>=0":
+          if (Number(INN_VALUE) >= 0) return Number(INN_VALUE);
+          break;
+        case "number <= 0":
+        case "number<= 0":
+        case "number <=0":
+        case "number<=0":
+          if (Number(INN_VALUE) <= 0) return Number(INN_VALUE);
+          break;
         default:
-          return Boolean(INN_VALUE);
+          return INN_VALUE === "true" ? "true" : "false";
       }
       if (retValue.length) {
-        break
-      } else{alert(`Your enter incorrect value, it must be a ${item.typeValue}`)}
+        break;
+      } else {
+        alert(`Your enter incorrect value, it must be a ${item.typeValue}`);
+      }
     }
   });
 
@@ -44,7 +68,7 @@ const FOR_EXAMPLE1 = [
   },
   {
     nameValue: "age user",
-    typeValue: "number",
+    typeValue: "number > 0",
   },
   {
     nameValue: "male",

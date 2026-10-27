@@ -9,19 +9,11 @@
  */
 export function isFatherTwofoldOlder(arg) {
   const [AGE_SON, AGE_FATHER] = arg;
-  let massage = "Your have entered incorrect age!";
-  switch (true) {
-    case AGE_SON < 0 || AGE_FATHER - AGE_SON < 15:
-      massage = "Your have entered incorrect age values";
-      break;
-    case AGE_FATHER / AGE_SON === 2:
-      massage = "The father is twice as old as his son.";
-      break;
-    case 2 * AGE_SON > AGE_FATHER:
-      massage = `The father was twice as old as his son ${AGE_SON * 2 - AGE_FATHER} years ago.`;
-      break;
-    default:
-      massage = `The father will be twice as old as his son in ${AGE_FATHER - AGE_SON * 2} years.`;
-  }
-  return massage;
+  if (AGE_SON < 0 || AGE_FATHER - AGE_SON < 15)
+    return "Your have entered incorrect age values";
+  if (AGE_FATHER === 2 * AGE_SON)
+    return "The father is twice as old as his son.";
+  return AGE_FATHER < 2 * AGE_SON
+    ? `The father was twice as old as his son ${2 * AGE_SON - AGE_FATHER} years ago.`
+    : `The father will be twice as old as his son in ${AGE_FATHER - 2 * AGE_SON} years.`;
 }
