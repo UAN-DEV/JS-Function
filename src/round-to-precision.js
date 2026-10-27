@@ -9,8 +9,5 @@
  */
 export function roundToPrecision(num, precision = 0) {
   const NUM_OF_PRECISION = num.toFixed(precision);
-  if (num - NUM_OF_PRECISION === 0) {
-    return num;
-  } else return NUM_OF_PRECISION;
+  return num - NUM_OF_PRECISION === 0 ? num : NUM_OF_PRECISION;
 }
-
