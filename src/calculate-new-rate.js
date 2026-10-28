@@ -8,7 +8,7 @@
  * @returns {number} New rate of winner, rounded to 1 decimal place.
  */
 export function calculateRate(arg) {
-  const [WINNER_RATE, LOSER_RATE] = arg;
+  const [{ value: WINNER_RATE }, { value: LOSER_RATE }] = arg;
   if (WINNER_RATE === 0) return LOSER_RATE;
   if (LOSER_RATE === 0) return WINNER_RATE;
   if (WINNER_RATE - LOSER_RATE < 0)

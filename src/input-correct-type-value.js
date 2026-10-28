@@ -4,7 +4,7 @@
  * Validation of input values ​​against the provided configuration
  *
  * @param {array of objects} arrTypesAndNames - Array of objects with the names, types and propertys of the required values
- * @returns {array} Array of valid values
+ * @returns {array of objects} Array of objects with valid values
  */
 export function inputCorrectTypeValue(
   arrTypesAndNames = [
@@ -16,35 +16,42 @@ export function inputCorrectTypeValue(
       let message1 = `Enter <${item.nameValue.toUpperCase()}> (must be a `;
       let message2 =
         item.typeValue === "<= number <="
-          ? `${item.from !== undefined ? item.from : ""} ${item.typeValue} ${item.to !== undefined ? item.to : ""}`
-          : `${item.typeValue} ${item.to !== undefined ? item.to : ""} ${item.from !== undefined ? item.from : ""}`;
+          ? `${item.from ?? ""} ${item.typeValue} ${item.to ?? ""}`
+          : `${item.typeValue} ${item.to ?? ""} ${item.from ?? ""}`;
 
       const INN_VALUE = prompt(`${message1} ${message2})`);
       switch (item.typeValue) {
         case "number":
           if (Number.isFinite(Number(INN_VALUE))) {
-            return Number(INN_VALUE);
+            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
           }
           break;
         case "string":
-          return String(INN_VALUE);
+          return { nameValue: item.nameValue, value: String(INN_VALUE) };
         case "boolean":
-          return Boolean(INN_VALUE === "true" ? "true" : "false");
+          return {
+            nameValue: item.nameValue,
+            value: Boolean(INN_VALUE === "true" ? true : false),
+          };
         case "number and <":
-          if (Number(INN_VALUE) < item.to) return Number(INN_VALUE);
+          if (Number(INN_VALUE) < item.to)
+            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
           break;
         case "number and >":
-          if (Number(INN_VALUE) > item.from) return Number(INN_VALUE);
+          if (Number(INN_VALUE) > item.from)
+            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
           break;
         case "number and <=":
-          if (Number(INN_VALUE) <= item.to) return Number(INN_VALUE);
+          if (Number(INN_VALUE) <= item.to)
+            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
           break;
         case "number and >=":
-          if (Number(INN_VALUE) >= item.from) return Number(INN_VALUE);
+          if (Number(INN_VALUE) >= item.from)
+            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
           break;
         case "<= number <=":
           if (Number(INN_VALUE) >= item.from && Number(INN_VALUE) <= item.to)
-            return Number(INN_VALUE);
+            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
           break;
         default:
           return;
