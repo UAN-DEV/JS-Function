@@ -9,8 +9,8 @@
  */
 export function isFatherTwofoldOlder(arg) {
   const [AGE_SON, AGE_FATHER] = arg;
-  if (AGE_SON < 0 || AGE_FATHER - AGE_SON < 15)
-    return "Your have entered incorrect age values";
+  if (AGE_FATHER - AGE_SON < 15)
+    return "You have entered invalid age values (the father must be at least 15 years older than the son).";
   if (AGE_FATHER === 2 * AGE_SON)
     return "The father is twice as old as his son.";
   return AGE_FATHER < 2 * AGE_SON

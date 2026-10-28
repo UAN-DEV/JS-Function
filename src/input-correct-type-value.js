@@ -3,18 +3,23 @@
 /**
  * Validation of input values ​​against the provided configuration
  *
- * @param {array} arrTypesAndNames - Array of objects with the names and types of the required values
- * @returns {array} Array with valid data
+ * @param {array of objects} arrTypesAndNames - Array of objects with the names, types and propertys of the required values
+ * @returns {array} Array of valid values
  */
 export function inputCorrectTypeValue(
-  arrTypesAndNames = [{ nameValue: "num1", typeValue: "number > 0" }],
+  arrTypesAndNames = [
+    { nameValue: "num1", typeValue: "number and >=", from: 0 },
+  ],
 ) {
   const arrValue = arrTypesAndNames.map((item) => {
     while (true) {
-      const INN_VALUE = prompt(
-        `Enter <${item.nameValue.toUpperCase()}> (must be a ${item.typeValue}):`,
-      );
-      let retValue = [];
+      let message1 = `Enter <${item.nameValue.toUpperCase()}> (must be a `;
+      let message2 =
+        item.typeValue === "<= number <="
+          ? `${item.from !== undefined ? item.from : ""} ${item.typeValue} ${item.to !== undefined ? item.to : ""}`
+          : `${item.typeValue} ${item.to !== undefined ? item.to : ""} ${item.from !== undefined ? item.from : ""}`;
+
+      const INN_VALUE = prompt(`${message1} ${message2})`);
       switch (item.typeValue) {
         case "number":
           if (Number.isFinite(Number(INN_VALUE))) {
@@ -23,68 +28,30 @@ export function inputCorrectTypeValue(
           break;
         case "string":
           return String(INN_VALUE);
+        case "boolean":
+          return Boolean(INN_VALUE === "true" ? "true" : "false");
+        case "number and <":
+          if (Number(INN_VALUE) < item.to) return Number(INN_VALUE);
           break;
-        case "number > 0":
-        case "number> 0":
-        case "number>0":
-          if (Number(INN_VALUE) > 0) return Number(INN_VALUE);
+        case "number and >":
+          if (Number(INN_VALUE) > item.from) return Number(INN_VALUE);
           break;
-        case "number < 0":
-        case "number< 0":
-        case "number<0":
-          if (Number(INN_VALUE) < 0) return Number(INN_VALUE);
+        case "number and <=":
+          if (Number(INN_VALUE) <= item.to) return Number(INN_VALUE);
           break;
-        case "number >= 0":
-        case "number>= 0":
-        case "number >=0":
-        case "number>=0":
-          if (Number(INN_VALUE) >= 0) return Number(INN_VALUE);
+        case "number and >=":
+          if (Number(INN_VALUE) >= item.from) return Number(INN_VALUE);
           break;
-        case "number <= 0":
-        case "number<= 0":
-        case "number <=0":
-        case "number<=0":
-          if (Number(INN_VALUE) <= 0) return Number(INN_VALUE);
+        case "<= number <=":
+          if (Number(INN_VALUE) >= item.from && Number(INN_VALUE) <= item.to)
+            return Number(INN_VALUE);
           break;
         default:
-          return INN_VALUE === "true" ? "true" : "false";
+          return;
       }
-      if (retValue.length) {
-        break;
-      } else {
-        alert(`Your enter incorrect value, it must be a ${item.typeValue}`);
-      }
+      alert(`Value must be a ${message2}`);
     }
   });
 
   return arrValue;
 }
-
-/* 
-const FOR_EXAMPLE1 = [
-  {
-    nameValue: "name user",
-    typeValue: "string",
-  },
-  {
-    nameValue: "age user",
-    typeValue: "number > 0",
-  },
-  {
-    nameValue: "male",
-    typeValue: "boolean",
-  },
-];
-
-const FOR_EXAMPLE2 = [
-  {
-    nameValue: "rate winner",
-    typeValue: "number",
-  },
-  {
-    nameValue: "rate loser",
-    typeValue: "number",
-  },
- ];
-
- */
