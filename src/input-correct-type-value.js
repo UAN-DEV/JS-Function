@@ -1,18 +1,5 @@
 "use strict";
-
-const LIST_OF_CHECKED_FUNCTONS
- = {
-  number: (val) => (Number.isFinite(Number(val)) ? Number(val) : null),
-  string: (val) => String(val),
-  boolean: (val) => val === "true", // Сразу вернет true или false логического типа
-  "number and <": (val, item) => (Number(val) < item.to ? Number(val) : null),
-  "number and >": (val, item) => (Number(val) > item.from ? Number(val) : null),
-  "number and <=": (val, item) => (Number(val) <= item.to ? Number(val) : null),
-  "number and >=": (val, item) =>
-    Number(val) >= item.from ? Number(val) : null,
-  "<= number <=": (val, item) =>
-    Number(val) >= item.from && Number(val) <= item.to ? Number(val) : null,
-};
+import {LIST_OF_CHECKED_FUNCTIONS} from './list-of-checked-function.js'
 
 /**
  * Validation of input values ​​against the provided configuration
@@ -26,7 +13,7 @@ export function inputCorrectTypeValue(
   ],
 ) {
   return arrTypesAndNames.map((item) => {
-    const CHECK_FUNCTION = LIST_OF_CHECKED_FUNCTONS
+    const CHECK_FUNCTION = LIST_OF_CHECKED_FUNCTIONS
     [item.typeValue];
     if (!CHECK_FUNCTION) return { nameValue: item.nameValue, value: undefined };
     const MESSAGE =
