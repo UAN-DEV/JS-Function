@@ -9,11 +9,15 @@
  */
 export function calculateRate(arg) {
   const [{ value: WINNER_RATE }, { value: LOSER_RATE }] = arg;
-  if (WINNER_RATE === 0) return LOSER_RATE;
-  if (LOSER_RATE === 0) return WINNER_RATE;
-  if (WINNER_RATE - LOSER_RATE < 0)
-    return WINNER_RATE + (LOSER_RATE - WINNER_RATE + 5) / 3;
-  if (WINNER_RATE - LOSER_RATE <= 2) return WINNER_RATE + 2;
-  if (WINNER_RATE - LOSER_RATE < 20) return ++WINNER_RATE;
-  return WINNER_RATE;
+  return WINNER_RATE === 0
+    ? LOSER_RATE
+    : LOSER_RATE === 0
+      ? WINNER_RATE
+      : WINNER_RATE < LOSER_RATE 
+        ? WINNER_RATE + (LOSER_RATE - WINNER_RATE + 5) / 3
+        : WINNER_RATE - LOSER_RATE <= 2
+          ? WINNER_RATE + 2
+          : WINNER_RATE - LOSER_RATE < 20
+            ? ++WINNER_RATE
+            : WINNER_RATE;
 }
