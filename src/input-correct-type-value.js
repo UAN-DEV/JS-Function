@@ -1,64 +1,47 @@
 "use strict";
 
+const LIST_OF_CHECKED_FUNCTONS
+ = {
+  number: (val) => (Number.isFinite(Number(val)) ? Number(val) : null),
+  string: (val) => String(val),
+  boolean: (val) => val === "true", // Сразу вернет true или false логического типа
+  "number and <": (val, item) => (Number(val) < item.to ? Number(val) : null),
+  "number and >": (val, item) => (Number(val) > item.from ? Number(val) : null),
+  "number and <=": (val, item) => (Number(val) <= item.to ? Number(val) : null),
+  "number and >=": (val, item) =>
+    Number(val) >= item.from ? Number(val) : null,
+  "<= number <=": (val, item) =>
+    Number(val) >= item.from && Number(val) <= item.to ? Number(val) : null,
+};
+
 /**
  * Validation of input values ​​against the provided configuration
  *
- * @param {array of objects} arrTypesAndNames - Array of objects with the names, types and propertys of the required values
- * @returns {array of objects} Array of objects with valid values
+ * @param {Array<{nameValue: string, typeValue: string, from?: number, to?: number}>} arrTypesAndNames - Array of objects with the names, types and propertys of the required values
+ * @returns {Array<{nameValue: string, value: any}>} - Array of objects with valid values
  */
 export function inputCorrectTypeValue(
   arrTypesAndNames = [
     { nameValue: "num1", typeValue: "number and >=", from: 0 },
   ],
 ) {
-  const arrValue = arrTypesAndNames.map((item) => {
-    while (true) {
-      let message1 = `Enter <${item.nameValue.toUpperCase()}> (must be a `;
-      let message2 =
-        item.typeValue === "<= number <="
-          ? `${item.from ?? ""} ${item.typeValue} ${item.to ?? ""}`
-          : `${item.typeValue} ${item.to ?? ""} ${item.from ?? ""}`;
+  return arrTypesAndNames.map((item) => {
+    const CHECK_FUNCTION = LIST_OF_CHECKED_FUNCTONS
+    [item.typeValue];
+    if (!CHECK_FUNCTION) return { nameValue: item.nameValue, value: undefined };
+    const MESSAGE =
+      item.typeValue === "<= number <="
+        ? `${item.from ?? ""} ${item.typeValue} ${item.to ?? ""}`.trim()
+        : `${item.typeValue} ${item.to ?? ""} ${item.from ?? ""}`.trim();
 
-      const INN_VALUE = prompt(`${message1} ${message2})`);
-      switch (item.typeValue) {
-        case "number":
-          if (Number.isFinite(Number(INN_VALUE))) {
-            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
-          }
-          break;
-        case "string":
-          return { nameValue: item.nameValue, value: String(INN_VALUE) };
-        case "boolean":
-          return {
-            nameValue: item.nameValue,
-            value: Boolean(INN_VALUE === "true" ? true : false),
-          };
-        case "number and <":
-          if (Number(INN_VALUE) < item.to)
-            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
-          break;
-        case "number and >":
-          if (Number(INN_VALUE) > item.from)
-            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
-          break;
-        case "number and <=":
-          if (Number(INN_VALUE) <= item.to)
-            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
-          break;
-        case "number and >=":
-          if (Number(INN_VALUE) >= item.from)
-            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
-          break;
-        case "<= number <=":
-          if (Number(INN_VALUE) >= item.from && Number(INN_VALUE) <= item.to)
-            return { nameValue: item.nameValue, value: Number(INN_VALUE) };
-          break;
-        default:
-          return;
-      }
-      alert(`Value must be a ${message2}`);
+    const FULL_MESSAGE = `Enter <${item.nameValue.toUpperCase()}> (must be a ${MESSAGE})`;
+
+    while (true) {
+      const INPUT_DATA = prompt(FULL_MESSAGE);
+      const CHECKED_VALUE = CHECK_FUNCTION(INPUT_DATA, item);
+
+      if (CHECKED_VALUE !== null) return { nameValue: item.nameValue, value: CHECKED_VALUE };
+      alert(`Value must be a ${MESSAGE}`);
     }
   });
-
-  return arrValue;
 }
