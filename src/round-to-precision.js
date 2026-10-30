@@ -5,7 +5,7 @@
  *
  * @param {number} num - Number
  * @param {number} precision - Precision (must be integer, between 0 and 100).
- * @returns
+ * @returns {number} - Number rounted to a specified precision
  */
 export function roundToPrecision(num, precision = 0) {
   return precision
