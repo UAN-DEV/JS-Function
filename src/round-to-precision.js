@@ -8,5 +8,7 @@
  * @returns
  */
 export function roundToPrecision(num, precision = 0) {
-  return num - num.toFixed(precision) === 0 ? num : num.toFixed(precision);
+  return precision
+    ? Math.round(num * 10 * precision) / (10 * precision)
+    : Math.round(num);
 }
